@@ -1,0 +1,183 @@
+
+import java.util.Iterator;
+import java.util.Scanner;
+
+
+public class Deque1<Item> implements Iterable<Item> {
+        
+        private class Node {
+                Item item;
+                Node next = null;
+                Node prev = null;
+        }
+        
+        private class DequeueIterator implements Iterator<Item> {
+                private Node current = listFront;
+                
+                public boolean hasNext() {
+                        return current != null;
+                }
+                
+                public Item next() {
+                        if (current == null)
+                                throw new java.util.NoSuchElementException();
+                        
+                        Item item = current.item;
+                        current = current.next;
+                        return item;
+                }
+                
+                public void remove() {
+                        throw new java.lang.UnsupportedOperationException();
+                }
+        }
+        
+        private Node listFront;
+        private Node listEnd;
+        private int size;
+        
+        public Deque1() {                    // construct an empty deque
+                listFront = null;
+                listEnd = null;
+                size = 0;
+        }
+        
+        public boolean isEmpty() {          // is the deque empty?
+                return listFront == null;
+        }
+        
+        public int size() {                 // return the number of items on the deque
+                return size;
+        }
+        
+        public void addFirst(Item item) {    // insert the item at the front
+                if (item == null)
+                        throw new java.lang.NullPointerException();
+
+                if (isEmpty()) {
+                        listFront = new Node();
+                        listEnd = listFront;
+                        listFront.item = item;
+                } else {
+                        Node newFront = new Node();
+                        newFront.item = item;
+                        newFront.next = listFront;
+                        listFront.prev = newFront;
+                        listFront = listFront.prev;
+                }
+                
+                size++;
+        }
+        
+        public void addLast(Item item) {     // insert the item at the end
+                if (item == null)
+                        throw new java.lang.NullPointerException();
+                
+                if (isEmpty()) {
+                        listFront = new Node();
+                        listEnd = listFront;
+                        listFront.item = item;
+                } else {
+                        Node newEnd = new Node();
+                        newEnd.item = item;
+                        listEnd.next = newEnd;
+                        newEnd.prev = listEnd;
+                        listEnd = newEnd;
+                }
+                
+                size++;
+        }
+        
+        public Item removeFirst() {         // delete and return the item at the front
+                if (isEmpty())
+                        throw new java.util.NoSuchElementException();
+                
+                Item returnItem = listFront.item;
+                listFront = listFront.next;
+                if (listFront != null) {
+                        listFront.prev.next = null;
+                        listFront.prev = null;
+                } else
+                        listEnd = null;
+                
+                size--;
+                
+                return returnItem;
+        }
+        
+        public Item removeLast() {           // delete and return the item at the end
+                if (isEmpty())
+                        throw new java.util.NoSuchElementException();
+                
+                Item returnItem = listEnd.item;
+                
+                if (size == 1) {
+                        listFront = null;
+                        listEnd = null;
+                }
+                else {
+                        listEnd = listEnd.prev;
+                        listEnd.next.prev = null;
+                        listEnd.next = null;
+                }
+                
+                size--;
+                
+                return returnItem;
+        }
+        
+        public Iterator<Item> iterator() {   // return an iterator over items in order from front to end
+                return new DequeueIterator();
+        }
+        public static void main(String[] args) {
+        	   Deque<String> queue=new Deque<String>();
+
+        	   int order=0;
+               int k=0;
+               int i=0;
+        	   String str=new String();
+        	   String str1=new String();
+        	   Scanner std=new Scanner(System.in);
+         
+        	   while(true)
+        	   {
+        		 //  Scanner sc0=new Scanner(System.in);
+        		 //  order=sc0.nextInt();
+        		 //  sc0.close();
+
+           
+         //     String a=sc.nextLine();
+          //    System.out.print(a);
+        		   str=std.nextLine();
+        		   str1=""+str.charAt(0);
+                  order=Integer.parseInt(str1);
+                  if(order==4||order==5){
+        		   
+                   str1=str.substring(2);
+                   i=0;
+                   while(i<str1.length())
+                   {
+                	   if((str1.charAt(i))==' ')
+                		   break;
+                	   else i++;
+                   }
+                	   str1=str1.substring(0,i);
+                  }
+                   switch(order)
+                   {
+                 
+                   case 2: System.out.print("Queue is Empty?"+queue.isEmpty());break;
+                   case 3: System.out.print("size is "+queue.size);break;
+                   case 4: queue.addFirst(str1);break;
+                   case 5: queue.addLast(str1);break;
+                   case 6: queue.removeFirst();break;
+                   case 7: queue.removeLast();break;
+                   case 8: queue.printAll();break;
+                   case 1: break;
+                   }
+               //   sc.close();
+           }
+        }
+        	
+        }
+}

@@ -1,0 +1,3 @@
+ODPS_P_DOWNLOAD_RECORD_LIMIT=100
+ODPS_P_RETAIN_TEMP=true
+eclipse.preferences.version=1
